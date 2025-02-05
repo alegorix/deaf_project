@@ -1,5 +1,10 @@
 # deaf_project
-# 📌 Connecter un Kinect à un Raspberry Pi
+# 📌 Connecter un Kinect à un Raspberry Pi pour la Traduction de la Langue des Signes
+
+## 🎯 Objectif
+Utiliser un Kinect avec un Raspberry Pi pour analyser une personne parlant la langue des signes et traduire les gestes en phrases en français.
+
+---
 
 ## 🎯 Matériel requis
 - **Kinect v1 (Xbox 360) ou Kinect v2 (Xbox One)**
@@ -62,6 +67,25 @@ Tester l’affichage vidéo :
 freenect-glview
 ```
 Si tout fonctionne, une fenêtre avec l’image de la caméra devrait apparaître.
+
+---
+
+## 🔍 4. Acquisition et traitement des données
+1. **Acquisition des données** :
+   - Utiliser le **Kinect** pour capturer les mouvements des mains et du corps.
+   - Extraire les coordonnées des articulations via **OpenNI** ou **libfreenect**.
+
+2. **Traitement des gestes** :
+   - Identifier et classifier les mouvements en signes avec **une IA basée sur un modèle de reconnaissance gestuelle** (TensorFlow, Mediapipe, etc.).
+   - Entraîner un modèle sur un dataset de langue des signes (ex: **RWTH-PHOENIX-Weather** pour la LSF).
+
+3. **Traduction en texte** :
+   - Convertir les gestes reconnus en texte via un moteur NLP (Natural Language Processing).
+   - Structurer la phrase pour une meilleure lisibilité.
+
+4. **Affichage / Synthèse vocale** :
+   - Afficher le texte traduit sur un écran.
+   - Ajouter une synthèse vocale pour une lecture audio (ex: **espeak** sur Raspberry Pi).
 
 ---
 
