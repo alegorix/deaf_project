@@ -136,38 +136,35 @@ Ce script récupère la profondeur à un point donné.
    - Identifier et classifier les mouvements en signes avec **une IA basée sur un modèle de reconnaissance gestuelle** (TensorFlow, Mediapipe, etc.).
    - Entraîner un modèle sur un dataset de langue des signes (ex: **RWTH-PHOENIX-Weather** pour la LSF).
 
-#### 📌 Utilisation de Mediapipe pour suivre les mains
+#### 📌 Entraînement d'un modèle TensorFlow pour la reconnaissance des signes
 ```python
-import cv2
-import mediapipe as mp
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+import numpy as np
 
-mp_hands = mp.solutions.hands
-hands = mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5)
+# Charger les données (exemple simplifié)
+x_train = np.random.rand(1000, 30, 3)  # 1000 échantillons, 30 frames, 3 coordonnées
+y_train = np.random.randint(0, 10, 1000)  # 10 classes de signes
 
-cap = cv2.VideoCapture(0)
+# Construire le modèle
+model = keras.Sequential([
+    layers.LSTM(64, return_sequences=True, input_shape=(30, 3)),
+    layers.LSTM(64),
+    layers.Dense(64, activation='relu'),
+    layers.Dense(10, activation='softmax')
+])
 
-while cap.isOpened():
-    ret, frame = cap.read()
-    if not ret:
-        break
+# Compiler le modèle
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    results = hands.process(rgb_frame)
+# Entraîner le modèle
+model.fit(x_train, y_train, epochs=10, batch_size=16)
 
-    if results.multi_hand_landmarks:
-        for hand_landmarks in results.multi_hand_landmarks:
-            for idx, landmark in enumerate(hand_landmarks.landmark):
-                h, w, _ = frame.shape
-                cx, cy = int(landmark.x * w), int(landmark.y * h)
-                cv2.circle(frame, (cx, cy), 5, (255, 0, 0), -1)
-
-    cv2.imshow("Hand Tracking", frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-cap.release()
-cv2.destroyAllWindows()
+# Sauvegarde du modèle
+model.save("sign_language_model.h5")
 ```
+Ce modèle simple utilise des **LSTM (Long Short-Term Memory)** pour analyser une séquence de coordonnées et classifier les signes.
 
 3. **Traduction en texte** :
    - Convertir les gestes reconnus en texte via un moteur NLP (Natural Language Processing).
@@ -182,7 +179,5 @@ cv2.destroyAllWindows()
 ## 📌 Remarques
 - **Kinect v2** nécessite **libfreenect2**, qui est plus complexe à installer sur Raspberry Pi.
 - Pour le **suivi des squelettes**, il faut utiliser OpenNI ou NiTE (plus difficile à configurer sur Pi).
-
-📢 **Si vous voulez utiliser Kinect pour un projet spécifique, n’hésitez pas à poser vos questions !** 😊
 
 
