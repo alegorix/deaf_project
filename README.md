@@ -136,6 +136,39 @@ Ce script récupère la profondeur à un point donné.
    - Identifier et classifier les mouvements en signes avec **une IA basée sur un modèle de reconnaissance gestuelle** (TensorFlow, Mediapipe, etc.).
    - Entraîner un modèle sur un dataset de langue des signes (ex: **RWTH-PHOENIX-Weather** pour la LSF).
 
+#### 📌 Utilisation de Mediapipe pour suivre les mains
+```python
+import cv2
+import mediapipe as mp
+
+mp_hands = mp.solutions.hands
+hands = mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5)
+
+cap = cv2.VideoCapture(0)
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    results = hands.process(rgb_frame)
+
+    if results.multi_hand_landmarks:
+        for hand_landmarks in results.multi_hand_landmarks:
+            for idx, landmark in enumerate(hand_landmarks.landmark):
+                h, w, _ = frame.shape
+                cx, cy = int(landmark.x * w), int(landmark.y * h)
+                cv2.circle(frame, (cx, cy), 5, (255, 0, 0), -1)
+
+    cv2.imshow("Hand Tracking", frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+```
+
 3. **Traduction en texte** :
    - Convertir les gestes reconnus en texte via un moteur NLP (Natural Language Processing).
    - Structurer la phrase pour une meilleure lisibilité.
@@ -151,4 +184,5 @@ Ce script récupère la profondeur à un point donné.
 - Pour le **suivi des squelettes**, il faut utiliser OpenNI ou NiTE (plus difficile à configurer sur Pi).
 
 📢 **Si vous voulez utiliser Kinect pour un projet spécifique, n’hésitez pas à poser vos questions !** 😊
+
 
