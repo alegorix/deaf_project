@@ -68,5 +68,3 @@ Si tout fonctionne, une fenêtre avec l’image de la caméra devrait apparaîtr
 ## 📌 Remarques
 - **Kinect v2** nécessite **libfreenect2**, qui est plus complexe à installer sur Raspberry Pi.
 - Pour le **suivi des squelettes**, il faut utiliser OpenNI ou NiTE (plus difficile à configurer sur Pi).
-
-📢 **Si vous voulez utiliser Kinect pour un projet spécifique, n’hésitez pas à poser vos questions !** 😊
