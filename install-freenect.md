@@ -16,3 +16,6 @@ sudo apt update
    pip install numpy opencv-python
 
    ```
+```bash
+pip install git+https://github.com/OpenKinect/libfreenect.git#subdirectory=wrappers/python --break-system-packages
+```
